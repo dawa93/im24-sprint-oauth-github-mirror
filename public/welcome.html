@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth2 로그인 성공</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  // location 객체를 통해 Access Token을 URL 파라미터로부터 받아올수 있습니다.
+  const query = window.location.search.substring(1)
+  const token = query.split('access_token=')[1]
+
+  // GitHub API를 통해 사용자 정보를 받아올 수 있습니다
+  fetch('//api.github.com/user', {
+    headers: {
+      // 이와 같이 Authorization 헤더에 `token ${token}`과 같이
+      // 인증 코드를 전송하는 형태를 가리켜 Bearer Token 인증이라고 합니다
+      Authorization: 'token ' + token
+    }
+  })
+    .then(res => res.json())
+    .then(res => {
+      // 이 응답에 대한 문서는 GitHub 공식 문서를 참조하세요
+      // https://developer.github.com/v3/users/#get-the-authenticated-user
+
+      document.body.innerText = `${res.name}님 환영합니다!`
+    })
+</script>
+
+</html>
